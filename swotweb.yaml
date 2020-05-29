@@ -1,0 +1,29 @@
+- name: Deploy Swot web
+  hosts: swot
+  remote_user: joseph
+  become: yes
+
+  tasks:
+    - name: Setup config file
+      template:
+        src: files/swot_config.yaml
+        dest: /opt/swot/config.yaml
+        mode: '0644'
+  
+    - name: Pull Swot latest from GitHub
+      docker_image:
+        name: docker.pkg.github.com/j03b/swot-backend/swot:latest
+        source: pull
+
+    - name: Start Swot container
+      docker_container:
+        name: swotweb
+        image: docker.pkg.github.com/j03b/swot-backend/swot:latest
+        networks_cli_compatible: no
+        networks:
+          - name: "{{ network_name }}"
+        volumes:
+          - /opt/swot/config.yaml:/app/config.yaml
+        restart: true
+        env:
+          DATABASE_URL: "{{ database_url }}"

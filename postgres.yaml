@@ -1,0 +1,31 @@
+- name: Deploy Postgres
+  hosts: swot
+  remote_user: joseph
+  become: yes
+
+  tasks:
+    - name: Ensure Postgres storage directory exists
+      file:
+        path: /opt/swot/postgres/
+        recurse: yes
+        state: directory
+        mode: '0644'
+
+    - name: Pull Postgres 12.2
+      docker_image:
+        name: postgres:12.2-alpine
+        source: pull
+
+    - name: Start Postgres container
+      docker_container:
+        name: postgres
+        image: postgres:12.2-alpine
+        networks_cli_compatible: no
+        networks:
+          - name: "{{ network_name }}"
+        volumes:
+          - /opt/swot/postgres:/var/lib/postgresql/data:rw
+        restart: true
+        env:
+          POSTGRES_USER: "{{ postgres_user }}"
+          POSTGRES_PASSWORD: "{{ postgres_password }}"

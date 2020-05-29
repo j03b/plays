@@ -1,0 +1,9 @@
+- name: Create Docker network
+  hosts: swot
+  remote_user: joseph
+  become: yes
+
+  tasks:
+    - name: "Create the {{ network_name }} network"
+      docker_network:
+        name: "{{ network_name }}"

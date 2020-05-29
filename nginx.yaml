@@ -1,0 +1,41 @@
+- name: Deploy NGINX
+  hosts: swot
+  remote_user: joseph
+  become: yes
+
+  tasks:
+    - name: Ensure host NGINX config directory exists
+      file:
+        path: /opt/swot/nginx/
+        recurse: yes
+        state: directory
+        mode: '0644'
+
+    - name: Copy NGINX root configuration to remote
+      copy:
+        src: nginx.conf
+        dest: /opt/swot/nginx
+
+    - name: Copy NGINX proxies configuration to remote
+      copy:
+        src: sites-enabled
+        dest: /opt/swot/nginx/
+
+    - name: Pull NGINX stable
+      docker_image:
+        name: nginx:stable
+        source: pull
+
+    - name: Start NGINX container
+      docker_container:
+        name: nginx
+        image: nginx:stable
+        networks_cli_compatible: no
+        networks:
+          - name: "{{ network_name }}"
+        volumes:
+          - /opt/swot/nginx/nginx.conf:/etc/nginx/nginx.conf
+          - /opt/swot/nginx/sites-enabled:/etc/nginx/sites-enabled
+        restart: true
+        published_ports:
+          - '80:80'

@@ -1,0 +1,11 @@
+- name: Login to Docker
+  hosts: swot
+  remote_user: joseph
+  become: yes
+
+  tasks:
+    - name: Login to GitHub PKG repo
+      docker_login:
+        username: jos-b
+        password: "{{ github_api_key }}"
+        registry: https://docker.pkg.github.com
