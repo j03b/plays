@@ -14,6 +14,7 @@
       docker_image:
         name: docker.pkg.github.com/j03b/swot-backend/swot:latest
         source: pull
+        force_source: true
 
     - name: Start Swot container
       docker_container:
