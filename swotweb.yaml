@@ -28,3 +28,9 @@
         restart: true
         env:
           DATABASE_URL: "{{ database_url }}"
+
+    - name: Prune Docker images
+      docker_prune:
+        images: yes
+        image_filters:
+          dangling: false
