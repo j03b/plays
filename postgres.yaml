@@ -9,7 +9,6 @@
         path: /opt/swot/postgres/
         recurse: yes
         state: directory
-        mode: '0644'
 
     - name: Pull Postgres 12.2
       docker_image:
