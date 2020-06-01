@@ -7,3 +7,8 @@
     - name: "Create the {{ network_name }} network"
       docker_network:
         name: "{{ network_name }}"
+
+    - name: Send Discord notification to signify network deployment
+      discord_webhook:
+        webhook_url: "{{ discord_webhook }}"
+        content: ":whale2: {{ network_name }} network has been created"

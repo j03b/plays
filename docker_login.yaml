@@ -9,3 +9,8 @@
         username: jos-b
         password: "{{ github_api_key }}"
         registry: https://docker.pkg.github.com
+
+    - name: Send Discord notification
+      discord_webhook:
+        webhook_url: "{{ discord_webhook }}"
+        content: ":whale2: logged into GitHub package repo"
