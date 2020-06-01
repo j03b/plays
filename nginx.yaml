@@ -26,7 +26,7 @@
         name: nginx:stable
         source: pull
 
-    - name: Send Discord notification to signify network deployment
+    - name: Send Discord notification
       discord_webhook:
         webhook_url: "{{ discord_webhook }}"
         content: ":arrow_down: pulled stable nginx"
@@ -45,7 +45,7 @@
         published_ports:
           - '80:80'
 
-    - name: Send Discord notification to signify network deployment
+    - name: Send Discord notification
       discord_webhook:
         webhook_url: "{{ discord_webhook }}"
         content: ":whale2: nginx has been deployed"

@@ -4,6 +4,11 @@
   become: yes
 
   tasks:
+    - name: Send Discord notification
+      discord_webhook:
+        webhook_url: "{{ discord_webhook }}"
+        content: ":new: deploying swot"
+
     - name: Setup config file
       template:
         src: files/swot_config.yaml
@@ -16,7 +21,7 @@
         source: pull
         force_source: true
 
-    - name: Send Discord notification to signify network deployment
+    - name: Send Discord notification
       discord_webhook:
         webhook_url: "{{ discord_webhook }}"
         content: ":arrow_down: pulled latest swot from github"
@@ -34,11 +39,10 @@
         env:
           DATABASE_URL: "{{ database_url }}"
 
-    - name: Send Discord notification to signify network deployment
+    - name: Send Discord notification
       discord_webhook:
         webhook_url: "{{ discord_webhook }}"
         content: ":whale2: swotweb has been restarted"
-
 
     - name: Prune Docker images
       docker_prune:
@@ -46,7 +50,7 @@
         images_filters:
           dangling: false
 
-    - name: Send Discord notification to signify network deployment
+    - name: Send Discord notification
       discord_webhook:
         webhook_url: "{{ discord_webhook }}"
         content: ":put_litter_in_its_place: docker images pruned"
